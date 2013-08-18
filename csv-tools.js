@@ -16,6 +16,12 @@ function generate_select(name, values){
            opt.value = d;
            opt.text = d;
        });
+   select.category = name;
+   defaultOption = document.createElement("option");
+   defaultOption.value = name;
+   defaultOption.text = name;
+   defaultOption.selected = true;
+   select.insertBefore(defaultOption, select.firstChild);
    return select
 }
 
@@ -47,16 +53,16 @@ function rows_to_columns(csv){
     return columns
 }
 
-function category_filter(csv, category, value){
+function category_filter(data, category, value){
 //Returns a dataset in which all elements have 'category':value
 
-   //if (value=="all"){
-     //  return csv;
- //  };
+   if (value==category){
+       return data;
+   };
 
    var nested = d3.nest()
        .key(function(d) {return d[category]; })
-       .map(csv, d3.map);
+       .map(data, d3.map);
 
    var filtered = nested.get(value);
    return filtered

@@ -7,13 +7,16 @@ d3.csv("test_fixture.csv", function(csv){
         var select_name = "name";
         var myselect = generate_select(select_name, select_options);
         equal(myselect.tagName, "SELECT", "returns a select")
-        equal(myselect.children.length, unique_options.length,
-            "options same length as unique");
-        for (var i=0; i<myselect.children.length; i++){
-            equal(myselect.children[i].value, unique_options[i],
-                "option "+i+ " is "+unique_options[i]);
-            equal(myselect.children[i].text, unique_options[i],
-                "option " +1+ " has text "+unique_options[1]);
+        equal(myselect.children.length, unique_options.length+1,
+            "options length of unique+1");
+        equal(myselect.category, select_name, "has attribute category");
+        equal(myselect.children[0].value, select_name, "first option has blank value");
+        equal(myselect.children[0].text,select_name, "first option has cat. name");
+        for (var i=1; i<myselect.children.length; i++){
+            equal(myselect.children[i].value, unique_options[i-1],
+                "option "+i+ " is "+unique_options[i-1]);
+            equal(myselect.children[i].text, unique_options[i-1],
+                "option " +1+ " has text "+unique_options[i-1]);
         };
     })
 
@@ -39,6 +42,10 @@ d3.csv("test_filter_fixture.csv", function(csv){
     });
     test('category_filter', function(){
         deepEqual(category_filter(csv),csv, "Doesn't filter if no categories");
+    });
+    test('category_filter', function(){
+        deepEqual(category_filter(csv,'Make','Make'),csv,
+            "Doesn't filter if option is category name");
     });
 });
 

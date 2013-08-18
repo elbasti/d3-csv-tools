@@ -46,3 +46,18 @@ function rows_to_columns(csv){
      });
     return columns
 }
+
+function category_filter(csv, category, value){
+//Returns a dataset in which all elements have 'category':value
+
+   //if (value=="all"){
+     //  return csv;
+ //  };
+
+   var nested = d3.nest()
+       .key(function(d) {return d[category]; })
+       .map(csv, d3.map);
+
+   var filtered = nested.get(value);
+   return filtered
+}

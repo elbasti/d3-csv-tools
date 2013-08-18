@@ -30,3 +30,16 @@ d3.csv("test_fixture.csv", function(csv){
     });
 });
 
+d3.csv("test_filter_fixture.csv", function(csv){
+
+    test('category_filter', function(){
+        deepEqual(category_filter(csv,'Make','Datsun'),[
+            {'Make':'Datsun', 'Model':'280Z','Year':'1979'},
+            {'Make':'Datsun', 'Model':'240Z','Year':'1977'}]);
+    });
+    test('category_filter', function(){
+        deepEqual(category_filter(csv),csv, "Doesn't filter if no categories");
+    });
+});
+
+

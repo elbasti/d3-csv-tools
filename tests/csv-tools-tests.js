@@ -49,4 +49,7 @@ d3.csv("test_filter_fixture.csv", function(csv){
     });
 });
 
+d3.csv("test_cross_average_fixture.csv", function(csv){
+    return true;
 
+});

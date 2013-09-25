@@ -9,15 +9,18 @@ function get_headings(csv){
 
 function generate_select(name, values){
 // returns a select with unique row values as options
+// found a more elegant way here: http://bl.ocks.org/phoebebright/raw/3176159/
+
    var select = document.createElement('select'); 
+   var defaultOption = document.createElement("option");
    var options = d3.set(values).values();
+
        options.forEach(function(d) {
            var opt = select.appendChild(document.createElement("option"));
            opt.value = d;
            opt.text = d;
        });
    select.category = name;
-   defaultOption = document.createElement("option");
    defaultOption.value = name;
    defaultOption.text = name;
    defaultOption.selected = true;
@@ -55,6 +58,8 @@ function rows_to_columns(csv){
 
 function category_filter(data, category, value){
 //Returns a dataset in which all elements have 'category':value
+//Doesn't filter if catogry == value
+// TODO should return a d3 selection?
 
    if (value==category){
        return data;
@@ -67,3 +72,19 @@ function category_filter(data, category, value){
    var filtered = nested.get(value);
    return filtered
 }
+
+function aggregate_population(data, size_key, percentage_keys){
+// Given a d3.js csv (data), where one column is a population size, and the other columns are percentages, outputs an object such that output.catgory is the total numbeof elements in that category 
+
+    var output = {};
+    //Total Population
+    output[size_key] = d3.sum(data, function(d){return +d[size_key];});
+    for (var i=0; i<percentage_keys.length; i++){
+        output[percentage_keys[i]] = d3.sum(data, 
+               function(d){
+                return +d[percentage_keys[i]]/100 * +d[size_key]
+               });
+    };
+    return output;
+}
+

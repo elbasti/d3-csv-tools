@@ -49,7 +49,11 @@ d3.csv("test_filter_fixture.csv", function(csv){
     });
 });
 
-d3.csv("test_cross_average_fixture.csv", function(csv){
-    return true;
+d3.csv("test_population_fixture.csv", function(csv){
+    test('Correct aggregate population', function(){
+        equal(aggregate_population(csv, "Total", 0).Total,250);
+    });
+    test('Correct category totals', function(){
+        equal(aggregate_population(csv, "Total", ['Short','Medium','Tall']).Short,22.5    );})
 
 });

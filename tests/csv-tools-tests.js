@@ -57,3 +57,8 @@ d3.csv("test_population_fixture.csv", function(csv){
         equal(aggregate_population(csv, "Total", ['Short','Medium','Tall']).Short,22.5    );})
 
 });
+
+d3.csv("test_population_fixture.csv", function(csv){
+    test('Correct % of population', function(){
+        equal(aggregate_population(csv, "Total", ['Short', 'Medium', 'Tall'], "normalize").Short, .09);})
+});

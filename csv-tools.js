@@ -73,18 +73,28 @@ function category_filter(data, category, value){
    return filtered
 }
 
-function aggregate_population(data, size_key, percentage_keys){
+function aggregate_population(data, size_key, percentage_keys, normalize){
 // Given a d3.js csv (data), where one column is a population size, and the other columns are percentages, outputs an object such that output.catgory is the total numbeof elements in that category 
-
-    var output = {};
+// If the "normalize" parameter is present, will return the percentage that each key represents in the entire popluation, not the net population size.
     //Total Population
-    output[size_key] = d3.sum(data, function(d){return +d[size_key];});
-    for (var i=0; i<percentage_keys.length; i++){
-        output[percentage_keys[i]] = d3.sum(data, 
-               function(d){
-                return +d[percentage_keys[i]]/100 * +d[size_key]
-               });
-    };
+        var output = {};
+        output[size_key] = d3.sum(data, function(d){return +d[size_key];});
+        for (var i=0; i<percentage_keys.length; i++){
+                output[percentage_keys[i]] = d3.sum(data, 
+                   function(d){
+                    return +d[percentage_keys[i]]/100 * +d[size_key]
+                   });
+
+                if (normalize !== undefined){
+                    output[percentage_keys[i]] =
+                        output[percentage_keys[i]]/d3.sum(data, 
+                            function(d){
+                                return +d[size_key]
+                            });
+                };
+        };
+
     return output;
 }
+
 
